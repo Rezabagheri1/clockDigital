@@ -7,31 +7,25 @@
     android:background="@color/black"
     tools:context="com.example.reza.dijitalwatch.MainActivity">
 
-<RelativeLayout
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="  "
         android:textSize="110dp"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="40dp"
-        android:layout_marginLeft="55dp"
+        android:layout_toLeftOf="@+id/colon"
         android:textColor="@color/blue"
-        android:id="@+id/saat"
+        android:id="@+id/hours"
         />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text=":"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:layout_marginTop="40dp"
-        android:layout_toRightOf="@+id/saat"
+        android:layout_centerHorizontal="true"
         android:textSize="110dp"
         android:textColor="@color/blue"
-        android:id="@+id/time0"
+        android:id="@+id/colon"
         />
     <TextView
         android:layout_width="wrap_content"
@@ -39,19 +33,18 @@
         android:text="  "
         android:textSize="110dp"
         android:textColor="@color/blue"
-        android:id="@+id/daghighe"
-        android:layout_marginTop="40dp"
-        android:layout_toRightOf="@+id/time0"
+        android:id="@+id/minute"
+        android:layout_toRightOf="@+id/colon"
         />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="  "
-        android:layout_toRightOf="@+id/daghighe"
-        android:layout_marginTop="110dp"
+        android:layout_marginTop="65dp"
+        android:layout_toRightOf="@+id/minute"
         android:textSize="16dp"
         android:textColor="@color/blue"
-        android:id="@+id/saniye"
+        android:id="@+id/seconds"
         />
 
     <TextView
@@ -60,45 +53,42 @@
         android:text="april"
         android:textSize="16dp"
         android:textColor="@color/blue"
-        android:id="@+id/time4"
-        android:paddingLeft="58dp"
-        android:layout_below="@+id/saat"
+        android:id="@+id/month"
+        android:layout_toLeftOf="@+id/colon"
+        android:layout_marginLeft="80dp"
+        android:layout_below="@+id/hours"
         />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="10"
+            android:text="24"
             android:textSize="16dp"
-            android:layout_below="@+id/saat"
-            android:paddingLeft="15dp"
-            android:layout_toRightOf="@+id/time4"
+            android:layout_below="@+id/hours"
+            android:layout_marginLeft="15dp"
+            android:layout_toRightOf="@+id/month"
             android:textColor="@color/blue"
-            android:id="@+id/time5"/>
+            android:id="@+id/day"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="2018"
             android:textSize="16dp"
-            android:layout_below="@+id/time0"
-            android:layout_toRightOf="@id/time5"
-            android:paddingLeft="16dp"
+            android:layout_below="@+id/colon"
+            android:layout_toRightOf="@id/day"
+            android:layout_marginLeft="16dp"
             android:textColor="@color/blue"
-            android:id="@+id/time6"/>
+            android:id="@+id/year"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="tuesday"
             android:textSize="16dp"
-            android:layout_toRightOf="@+id/time6"
-            android:layout_below="@+id/daghighe"
-            android:paddingLeft="72dp"
+            android:layout_toRightOf="@+id/colon"
+            android:layout_below="@+id/minute"
+            android:layout_marginLeft="72dp"
             android:textColor="@color/blue"
-            android:id="@+id/time7"/>
-</RelativeLayout>
-
-
-
+            android:id="@+id/week"/>
 
       <Button
           android:layout_width="wrap_content"
@@ -106,7 +96,31 @@
           android:id="@+id/click"
           android:text="click"
           android:layout_marginTop="250dp"
-          android:layout_marginLeft="120dp"
+          android:layout_centerHorizontal="true"
+
           />
+    <RadioGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/click"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/select"
+        >
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/hours12"
+            android:checked="true"
+            android:text="12"
+            android:textColor="@color/blue1"
+            />
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/hours24"
+            android:checked="false"
+            android:textColor="@color/redCarpet"
+            android:text="24"/>
+    </RadioGroup>
 
 </RelativeLayout>

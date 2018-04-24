@@ -1,1207 +1,183 @@
 package com.example.reza.dijitalwatch;
-import android.os.Handler;
+
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Date;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MediaPlayer.OnCompletionListener{
     int Minute=0;
-    Handler handler = new Handler();
+
+    private TextView hours,minute,colon,seconds,days,months,years,weeks;
+    private Button click;
+    private RadioGroup rg;
+
+    private int[] sounds ={
+            R.raw.yazda11,R.raw.dah10,R.raw.se3,R.raw.shanzda16,0
+    };
+    int[] sounds1={
+            0,
+            R.raw.yek,R.raw.doo,R.raw.se3,R.raw.char4,R.raw.panj5,R.raw.shesh,
+            R.raw.haft7,R.raw.hasht8,R.raw.noh9,
+            R.raw.dah10,R.raw.yazda11,R.raw.davazda12, R.raw.sizda13,
+            R.raw.charda14,R.raw.panzda15,R.raw.shanzda16,R.raw.hefda17,
+            R.raw.hejda18,R.raw.nozda19,R.raw.bist20
+    };
+    int[] sounds1o={
+            0,
+            R.raw.yeko1,R.raw.doo2,R.raw.seo3,R.raw.charo4,
+            R.raw.panjo5,R.raw.shesho6,R.raw.hafto7,
+            R.raw.hashto8,R.raw.noho9,R.raw.daho10,
+            R.raw.yazdao11,R.raw.davazdao12,R.raw.sizdao13,
+            R.raw.chardao14,R.raw.panzdao15, R.raw.shanzdao16,
+            R.raw.hefdao17,R.raw.hejdao18,R.raw.nozdaho19,R.raw.bisto20
+    };
+    int[] sounds10o={
+            0, R.raw.daho10,R.raw.bisto20,R.raw.si_o,R.raw.chel_o40, R.raw.panja_o
+    };
+    int[] sounds10={
+            0, R.raw.dah10,R.raw.bist20,R.raw.si,R.raw.chel40, R.raw.panja
+    };
+    private int loc=0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Typeface fn =Typeface.createFromAsset(getAssets(),"fonts/digital-7.ttf");
-        TextView tm =(TextView) findViewById(R.id.saat);
-        tm.setTypeface(fn);
-        TextView tm0 =(TextView) findViewById(R.id.time0);
-        tm0.setTypeface(fn);
-        TextView tm1 =(TextView) findViewById(R.id.daghighe);
-        tm1.setTypeface(fn);
-        TextView tm2 =(TextView) findViewById(R.id.saniye);
-        tm2.setTypeface(fn);
-
-        TextView tm3 =(TextView) findViewById(R.id.time4);
-        tm3.setTypeface(fn);
-        TextView tm4 =(TextView) findViewById(R.id.time5);
-        tm4.setTypeface(fn);
-        TextView tm5 =(TextView) findViewById(R.id.time6);
-        tm5.setTypeface(fn);
-        TextView tm6 =(TextView) findViewById(R.id.time7);
-        tm6.setTypeface(fn);
-
-        Date d =new Date();
-        final int h = d.getHours();
-        final int m  =d.getMinutes();
-        final int s = d.getSeconds();
-        final TextView Hours =(TextView)findViewById(R.id.saat);
-        final TextView minute =(TextView)findViewById(R.id.daghighe);
-        final TextView second =(TextView)findViewById(R.id.saniye);
-
-        final MediaPlayer mp = MediaPlayer.create(this , R.raw.saat1);
-        final MediaPlayer mp1 =MediaPlayer.create(this,R.raw.yek);
-        final MediaPlayer mp2 =MediaPlayer.create(this,R.raw.doo);
-        final MediaPlayer mp3 =MediaPlayer.create(this,R.raw.se3);
-        final MediaPlayer mp4 =MediaPlayer.create(this,R.raw.char4);
-        final MediaPlayer mp5 =MediaPlayer.create(this,R.raw.panj5);
-        final MediaPlayer mp6 =MediaPlayer.create(this,R.raw.shesh);
-        final MediaPlayer mp7 =MediaPlayer.create(this,R.raw.haft7);
-        final MediaPlayer mp8 =MediaPlayer.create(this,R.raw.hasht8);
-        final MediaPlayer mp9 =MediaPlayer.create(this,R.raw.noh9);
-        final MediaPlayer mp10 =MediaPlayer.create(this,R.raw.dah10);
-        final MediaPlayer mp11 =MediaPlayer.create(this,R.raw.yazda11);
-        final MediaPlayer mp12 =MediaPlayer.create(this,R.raw.davazda12);
-        final MediaPlayer mp13 =MediaPlayer.create(this,R.raw.sizda13);
-        final MediaPlayer mp14 =MediaPlayer.create(this,R.raw.charda14);
-        final MediaPlayer mp15 =MediaPlayer.create(this,R.raw.panzda15);
-        final MediaPlayer mp16 =MediaPlayer.create(this,R.raw.shanzda16);
-        final MediaPlayer mp17 =MediaPlayer.create(this,R.raw.hefda17);
-        final MediaPlayer mp18 =MediaPlayer.create(this,R.raw.hejda18);
-        final MediaPlayer mp19 =MediaPlayer.create(this,R.raw.nozda19);
-        final MediaPlayer mp20 =MediaPlayer.create(this,R.raw.bist20);
-        final MediaPlayer mp30 =MediaPlayer.create(this,R.raw.si);
-        final MediaPlayer mp40 =MediaPlayer.create(this,R.raw.chel40);
-        final MediaPlayer mp50 =MediaPlayer.create(this,R.raw.panja);
-        final MediaPlayer mp21 =MediaPlayer.create(this,R.raw.bistoyek21);
-        final MediaPlayer mp22 =MediaPlayer.create(this,R.raw.bistodo22);
-        final MediaPlayer mp23 =MediaPlayer.create(this,R.raw.bist0se23);
-
-        final MediaPlayer mc24 =MediaPlayer.create(this,R.raw.va);
-        final MediaPlayer mc26 =MediaPlayer.create(this,R.raw.va2);
-        final MediaPlayer mc25 =MediaPlayer.create(this,R.raw.daghi);
 
 
+        rg = (RadioGroup) findViewById(R.id.select);
 
-        Button bt =(Button)findViewById(R.id.click);
-        bt.setOnClickListener(new View.OnClickListener() {
+       /* rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        {
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch(checkedId){
+                    case R.id.hours12:
+                        // do operations specific to this selection
+                        break;
+                    case R.id.hours24:
+                        // do operations specific to this selection
+                        break;
+                }
+            }
+        });
+*/
+        hours = (TextView) findViewById(R.id.hours);
+        minute = (TextView) findViewById(R.id.minute);
+        seconds = (TextView) findViewById(R.id.seconds);
+        days =(TextView)findViewById(R.id.day);
+        months =(TextView)findViewById(R.id.month);
+        years =(TextView)findViewById(R.id.year);
+        weeks =(TextView)findViewById(R.id.week);
+        colon = (TextView) findViewById(R.id.colon);
+        click =(Button)findViewById(R.id.click);
+
+        Typeface type = Typeface.createFromAsset(getAssets(), "fonts/digital7.ttf");
+        hours.setTypeface(type);
+        minute.setTypeface(type);
+        seconds.setTypeface(type);
+        days.setTypeface(type);
+        weeks.setTypeface(type);
+        months.setTypeface(type);
+        years.setTypeface(type);
+        colon.setTypeface(type);
+
+        click.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                Hours.setText(String.valueOf(h));
-                minute.setText(String.valueOf(m));
-                second.setText(String.valueOf(s));
 
-                mp.start();
+        Date d = new Date();
+        int h = d.getHours();
+        int m = d.getMinutes();
+        int s = d.getSeconds();
 
+        String hs = String.format("%02d", h);
+        String ms = String.format("%02d", m);
+        String ss = String.format("%02d", s);
 
+        minute.setText(ms);
+        seconds.setText(ss);
+        loc=0;
 
-                if (h != 0 && m == 0) {
-                    switch (h) {
-                        case 1:
-                            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                @Override
-                                public void onCompletion(MediaPlayer mp) {
-                                    mp1.start();
+        int selectp;
+                selectp = rg.getCheckedRadioButtonId();
 
-                                }
-                            });
-                            break;
-                        case 2:
-                            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                @Override
-                                public void onCompletion(MediaPlayer mp) {
+                    if (selectp==R.id.hours12){
+                        int h12 =h-12;
 
-                                    mp2.start();
-                                }
-                            });
-                            break;
-                        case 3:
-                            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                @Override
-                                public void onCompletion(MediaPlayer mp) {
-
-                                    mp3.start();
-                                }
-                            });
-                            break;
-                        case 4:
-                            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                @Override
-                                public void onCompletion(MediaPlayer mp) {
-                                    mp4.start();
-                                }
-                            });
-                            break;
-                        case 5:
-                            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                @Override
-                                public void onCompletion(MediaPlayer mp) {
-                                    mp5.start();
-                                }
-                            });
-                            break;
-
-                        case 6:
-                            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                @Override
-                                public void onCompletion(MediaPlayer mp) {
-                                    mp6.start();
-                                }
-                            });
-                            break;
-                        case 7:
-                            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                @Override
-                                public void onCompletion(MediaPlayer mp) {
-                                    mp7.start();
-                                }
-                            });
-                            break;
-
-                        case 8:
-                            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                @Override
-                                public void onCompletion(MediaPlayer mp) {
-                                    mp8.start();
-                                }
-                            });
-                            break;
-                        case 9:
-                            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                @Override
-                                public void onCompletion(MediaPlayer mp) {
-                                    mp9.start();
-                                }
-                            });
-                            break;
-                        case 10:
-                            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                @Override
-                                public void onCompletion(MediaPlayer mp) {
-                                    mp10.start();
-                                }
-                            });
-                            break;
-                        case 11:
-                            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                @Override
-                                public void onCompletion(MediaPlayer mp) {
-                                    mp11.start();
-                                }
-                            });
-                            break;
-                        case 12:
-                            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                @Override
-                                public void onCompletion(MediaPlayer mp) {
-                                    mp12.start();
-                                }
-                            });
-                            break;
-                        case 13:
-                            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                @Override
-                                public void onCompletion(MediaPlayer mp) {
-                                    mp13.start();
-                                }
-                            });
-                            break;
-                        case 14:
-                            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                @Override
-                                public void onCompletion(MediaPlayer mp) {
-                                    mp14.start();
-                                }
-                            });
-                            break;
-                        case 15:
-                            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                @Override
-                                public void onCompletion(MediaPlayer mp) {
-                                    mp15.start();
-                                }
-                            });
-                            break;
-                        case 16:
-                            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                @Override
-                                public void onCompletion(MediaPlayer mp) {
-                                    mp16.start();
-                                }
-                            });
-                            break;
-                        case 17:
-                            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                @Override
-                                public void onCompletion(MediaPlayer mp) {
-                                    mp17.start();
-                                }
-                            });
-                            break;
-                        case 18:
-                            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                @Override
-                                public void onCompletion(MediaPlayer mp) {
-                                    mp18.start();
-                                }
-                            });
-                            break;
-                        case 19:
-                            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                @Override
-                                public void onCompletion(MediaPlayer mp) {
-                                    mp19.start();
-                                }
-                            });
-                            break;
-                        case 20:
-                            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                @Override
-                                public void onCompletion(MediaPlayer mp) {
-                                    mp20.start();
-                                }
-                            });
-                            break;
-                        case 21:
-                            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                @Override
-                                public void onCompletion(MediaPlayer mp) {
-                                    mp21.start();
-                                }
-                            });
-                            break;
-                        case 22:
-                            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                @Override
-                                public void onCompletion(MediaPlayer mp) {
-                                    mp22.start();
-                                }
-                            });
-                            break;
-                        case 23:
-                            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                @Override
-                                public void onCompletion(MediaPlayer mp) {
-                                    mp23.start();
-                                }
-                            });
-                            break;
-                    }
-                }
-
-                if (h != 0 && m != 0) {
-
-                    switch (h) {
-                        case 1:
-                            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                @Override
-                                public void onCompletion(MediaPlayer mp) {
-                                    mp1.start();
-                                    mp1.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                        @Override
-                                        public void onCompletion(MediaPlayer mp) {
-                                            mc24.start();
-                                        }
-                                    });
-
-                                }
-                            });
-                            break;
-                        case 2:
-                            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                @Override
-                                public void onCompletion(MediaPlayer mp) {
-
-                                    mp2.start();
-                                    mp2.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                        @Override
-                                        public void onCompletion(MediaPlayer mp) {
-                                            mc24.start();
-                                        }
-                                    });
-                                }
-                            });
-                            break;
-                        case 3:
-                            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                @Override
-                                public void onCompletion(MediaPlayer mp) {
-
-                                    mp3.start();
-                                    mp3.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                        @Override
-                                        public void onCompletion(MediaPlayer mp) {
-                                            mc24.start();
-                                        }
-                                    });
-                                }
-                            });
-                            break;
-                        case 4:
-                            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                @Override
-                                public void onCompletion(MediaPlayer mp) {
-                                    mp4.start();
-                                    mp4.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                        @Override
-                                        public void onCompletion(MediaPlayer mp) {
-                                            mc24.start();
-                                        }
-                                    });
-                                }
-                            });
-                            break;
-                        case 5:
-                            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                @Override
-                                public void onCompletion(MediaPlayer mp) {
-                                    mp5.start();
-                                    mp5.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                        @Override
-                                        public void onCompletion(MediaPlayer mp) {
-                                            mc24.start();
-                                        }
-                                    });
-                                }
-                            });
-                            break;
-
-                        case 6:
-                            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                @Override
-                                public void onCompletion(MediaPlayer mp) {
-                                    mp6.start();
-                                    mp6.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                        @Override
-                                        public void onCompletion(MediaPlayer mp) {
-                                            mc24.start();
-                                        }
-                                    });
-                                }
-                            });
-                            break;
-                        case 7:
-                            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                @Override
-                                public void onCompletion(MediaPlayer mp) {
-                                    mp7.start();
-                                    mp7.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                        @Override
-                                        public void onCompletion(MediaPlayer mp) {
-                                            mc24.start();
-                                        }
-                                    });
-                                }
-                            });
-                            break;
-
-                        case 8:
-                            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                @Override
-                                public void onCompletion(MediaPlayer mp) {
-                                    mp8.start();
-                                    mp8.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                        @Override
-                                        public void onCompletion(MediaPlayer mp) {
-                                            mc24.start();
-                                        }
-                                    });
-                                }
-                            });
-                            break;
-                        case 9:
-                            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                @Override
-                                public void onCompletion(MediaPlayer mp) {
-                                    mp9.start();
-                                    mp9.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                        @Override
-                                        public void onCompletion(MediaPlayer mp) {
-                                            mc24.start();
-                                        }
-                                    });
-                                }
-                            });
-                            break;
-                        case 10:
-                            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                @Override
-                                public void onCompletion(MediaPlayer mp) {
-                                    mp10.start();
-                                    mp10.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                        @Override
-                                        public void onCompletion(MediaPlayer mp) {
-                                            mc24.start();
-                                        }
-                                    });
-                                }
-                            });
-                            break;
-                        case 11:
-                            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                @Override
-                                public void onCompletion(MediaPlayer mp) {
-                                    mp11.start();
-                                    mp11.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                        @Override
-                                        public void onCompletion(MediaPlayer mp) {
-                                            mc24.start();
-                                        }
-                                    });
-                                }
-                            });
-                            break;
-                        case 12:
-                            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                @Override
-                                public void onCompletion(MediaPlayer mp) {
-                                    mp12.start();
-                                    mp12.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                        @Override
-                                        public void onCompletion(MediaPlayer mp) {
-                                            mc24.start();
-                                        }
-                                    });
-                                }
-                            });
-                            break;
-                        case 13:
-                            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                @Override
-                                public void onCompletion(MediaPlayer mp) {
-                                    mp13.start();
-                                    mp13.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                        @Override
-                                        public void onCompletion(MediaPlayer mp) {
-                                            mc24.start();
-                                        }
-                                    });
-                                }
-                            });
-                            break;
-                        case 14:
-                            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                @Override
-                                public void onCompletion(MediaPlayer mp) {
-                                    mp14.start();
-                                    mp14.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                        @Override
-                                        public void onCompletion(MediaPlayer mp) {
-                                            mc24.start();
-                                        }
-                                    });
-                                }
-                            });
-                            break;
-                        case 15:
-                            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                @Override
-                                public void onCompletion(MediaPlayer mp) {
-                                    mp15.start();
-                                    mp15.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                        @Override
-                                        public void onCompletion(MediaPlayer mp) {
-                                            mc24.start();
-                                        }
-                                    });
-                                }
-                            });
-                            break;
-                        case 16:
-                            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                @Override
-                                public void onCompletion(MediaPlayer mp) {
-                                    mp16.start();
-                                    mp16.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                        @Override
-                                        public void onCompletion(MediaPlayer mp) {
-                                            mc24.start();
-                                        }
-                                    });
-                                }
-                            });
-                            break;
-                        case 17:
-                            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                @Override
-                                public void onCompletion(MediaPlayer mp) {
-                                    mp17.start();
-                                    mp17.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                        @Override
-                                        public void onCompletion(MediaPlayer mp) {
-                                            mc24.start();
-                                        }
-                                    });
-                                }
-                            });
-                            break;
-                        case 18:
-                            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                @Override
-                                public void onCompletion(MediaPlayer mp) {
-                                    mp18.start();
-                                    mp18.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                        @Override
-                                        public void onCompletion(MediaPlayer mp) {
-                                            mc24.start();
-                                        }
-                                    });
-                                }
-                            });
-                            break;
-                        case 19:
-                            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                @Override
-                                public void onCompletion(MediaPlayer mp) {
-                                    mp19.start();
-                                    mp19.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                        @Override
-                                        public void onCompletion(MediaPlayer mp) {
-                                            mc24.start();
-                                        }
-                                    });
-                                }
-                            });
-                            break;
-                        case 20:
-                            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                @Override
-                                public void onCompletion(MediaPlayer mp) {
-                                    mp20.start();
-                                    mp20.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                        @Override
-                                        public void onCompletion(MediaPlayer mp) {
-                                            mc24.start();
-                                        }
-                                    });
-                                }
-                            });
-                            break;
-                        case 21:
-                            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                @Override
-                                public void onCompletion(MediaPlayer mp) {
-                                    mp21.start();
-                                    mp21.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                        @Override
-                                        public void onCompletion(MediaPlayer mp) {
-                                            mc24.start();
-                                        }
-                                    });
-                                }
-                            });
-                            break;
-                        case 22:
-                            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                @Override
-                                public void onCompletion(MediaPlayer mp) {
-                                    mp22.start();
-                                    mp22.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                        @Override
-                                        public void onCompletion(MediaPlayer mp) {
-                                            mc24.start();
-                                        }
-                                    });
-                                }
-                            });
-                            break;
-                        case 23:
-                            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                @Override
-                                public void onCompletion(MediaPlayer mp) {
-                                    mp23.start();
-                                    mp23.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                        @Override
-                                        public void onCompletion(MediaPlayer mp) {
-                                            mc24.start();
-                                        }
-                                    });
-                                }
-                            });
-                            break;
-                    }
-                }
-
-
-                if (m != 0) {
-                    switch (m) {
-                        case 1:
-                            mc24.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                @Override
-                                public void onCompletion(MediaPlayer mp) {
-                                    mp1.start();
-                                    mp1.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                        @Override
-                                        public void onCompletion(MediaPlayer mp) {
-                                            mc25.start();
-                                        }
-                                    });
-                                }
-                            });
-                            break;
-                        case 2:
-                            mc24.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                @Override
-                                public void onCompletion(MediaPlayer mp) {
-                                    mp2.start();
-                                    mp2.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                        @Override
-                                        public void onCompletion(MediaPlayer mp) {
-                                            mc25.start();
-                                        }
-                                    });
-                                }
-                            });
-                            break;
-                        case 3:
-                            mc24.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                @Override
-                                public void onCompletion(MediaPlayer mp) {
-                                    mp3.start();
-                                    mp3.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                        @Override
-                                        public void onCompletion(MediaPlayer mp) {
-                                            mc25.start();
-                                        }
-                                    });
-                                }
-                            });
-                            break;
-                        case 4:
-                            mc24.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                @Override
-                                public void onCompletion(MediaPlayer mp) {
-                                    mp4.start();
-                                    mp4.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                        @Override
-                                        public void onCompletion(MediaPlayer mp) {
-                                            mc25.start();
-                                        }
-                                    });
-                                }
-                            });
-                            break;
-                        case 5:
-                            mc24.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                @Override
-                                public void onCompletion(MediaPlayer mp) {
-                                    mp5.start();
-                                    mp5.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                        @Override
-                                        public void onCompletion(MediaPlayer mp) {
-                                            mc25.start();
-                                        }
-                                    });
-                                }
-                            });
-                            break;
-                        case 6:
-                            mc24.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                @Override
-                                public void onCompletion(MediaPlayer mp) {
-                                    mp6.start();
-                                    mp6.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                        @Override
-                                        public void onCompletion(MediaPlayer mp) {
-                                            mc25.start();
-                                        }
-                                    });
-                                }
-                            });
-                            break;
-                        case 7:
-                            mc24.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                @Override
-                                public void onCompletion(MediaPlayer mp) {
-                                    mp7.start();
-                                    mp7.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                        @Override
-                                        public void onCompletion(MediaPlayer mp) {
-                                            mc25.start();
-                                        }
-                                    });
-                                }
-                            });
-                            break;
-                        case 8:
-                            mc24.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                @Override
-                                public void onCompletion(MediaPlayer mp) {
-                                    mp8.start();
-                                    mp8.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                        @Override
-                                        public void onCompletion(MediaPlayer mp) {
-                                            mc25.start();
-                                        }
-                                    });
-                                }
-                            });
-                            break;
-                        case 9:
-                            mc24.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                @Override
-                                public void onCompletion(MediaPlayer mp) {
-                                    mp9.start();
-                                    mp9.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                        @Override
-                                        public void onCompletion(MediaPlayer mp) {
-                                            mc25.start();
-                                        }
-                                    });
-                                }
-                            });
-                            break;
-                        case 10:
-                            mc24.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                @Override
-                                public void onCompletion(MediaPlayer mp) {
-                                    mp10.start();
-                                    mp10.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                        @Override
-                                        public void onCompletion(MediaPlayer mp) {
-                                            mc25.start();
-                                        }
-                                    });
-                                }
-                            });
-                            break;
-                        case 11:
-                            mc24.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                @Override
-                                public void onCompletion(MediaPlayer mp) {
-                                    mp11.start();
-                                    mp11.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                        @Override
-                                        public void onCompletion(MediaPlayer mp) {
-                                            mc25.start();
-                                        }
-                                    });
-                                }
-                            });
-                            break;
-                        case 12:
-                            mc24.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                @Override
-                                public void onCompletion(MediaPlayer mp) {
-                                    mp12.start();
-                                    mp12.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                        @Override
-                                        public void onCompletion(MediaPlayer mp) {
-                                            mc25.start();
-                                        }
-                                    });
-                                }
-                            });
-                            break;
-                        case 13:
-                            mc24.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                @Override
-                                public void onCompletion(MediaPlayer mp) {
-                                    mp13.start();
-                                    mp13.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                        @Override
-                                        public void onCompletion(MediaPlayer mp) {
-                                            mc25.start();
-                                        }
-                                    });
-                                }
-                            });
-                            break;
-                        case 14:
-                            mc24.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                @Override
-                                public void onCompletion(MediaPlayer mp) {
-                                    mp14.start();
-                                    mp14.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                        @Override
-                                        public void onCompletion(MediaPlayer mp) {
-                                            mc25.start();
-                                        }
-                                    });
-                                }
-                            });
-                            break;
-                        case 15:
-                            mc24.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                @Override
-                                public void onCompletion(MediaPlayer mp) {
-                                    mp15.start();
-                                    mp15.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                        @Override
-                                        public void onCompletion(MediaPlayer mp) {
-                                            mc25.start();
-                                        }
-                                    });
-                                }
-                            });
-                            break;
-                        case 16:
-                            mc24.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                @Override
-                                public void onCompletion(MediaPlayer mp) {
-                                    mp16.start();
-                                    mp16.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                        @Override
-                                        public void onCompletion(MediaPlayer mp) {
-                                            mc25.start();
-                                        }
-                                    });
-                                }
-                            });
-                            break;
-                        case 17:
-                            mc24.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                @Override
-                                public void onCompletion(MediaPlayer mp) {
-                                    mp17.start();
-                                    mp17.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                        @Override
-                                        public void onCompletion(MediaPlayer mp) {
-                                            mc25.start();
-                                        }
-                                    });
-                                }
-                            });
-                            break;
-                        case 18:
-                            mc24.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                @Override
-                                public void onCompletion(MediaPlayer mp) {
-                                    mp18.start();
-                                    mp18.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                        @Override
-                                        public void onCompletion(MediaPlayer mp) {
-                                            mc25.start();
-                                        }
-                                    });
-                                }
-                            });
-                            break;
-                        case 19:
-                            mc24.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                @Override
-                                public void onCompletion(MediaPlayer mp) {
-                                    mp19.start();
-                                    mp19.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                        @Override
-                                        public void onCompletion(MediaPlayer mp) {
-                                            mc25.start();
-                                        }
-                                    });
-                                }
-                            });
-                            break;
-                        case 20:
-                            mc24.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                @Override
-                                public void onCompletion(MediaPlayer mp) {
-                                    mp20.start();
-                                    mp20.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                        @Override
-                                        public void onCompletion(MediaPlayer mp) {
-                                            mc25.start();
-                                        }
-                                    });
-                                }
-                            });
-                            break;
-                            case 30:
-                            mc24.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                @Override
-                                public void onCompletion(MediaPlayer mp) {
-                                    mp30.start();
-                                    mp30.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                        @Override
-                                        public void onCompletion(MediaPlayer mp) {
-                                            mc25.start();
-                                        }
-                                    });
-                                }
-                            });
-                            break;
-                            case 40:
-                            mc24.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                @Override
-                                public void onCompletion(MediaPlayer mp) {
-                                    mp40.start();
-                                    mp40.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                        @Override
-                                        public void onCompletion(MediaPlayer mp) {
-                                            mc25.start();
-                                        }
-                                    });
-                                }
-                            });
-                            break;
-                        case 50:
-                            mc24.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                @Override
-                                public void onCompletion(MediaPlayer mp) {
-                                    mp50.start();
-                                    mp50.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                        @Override
-                                        public void onCompletion(MediaPlayer mp) {
-                                            mc25.start();
-                                        }
-                                    });
-                                }
-                            });
-                            break;
+                        hours.setText(String.valueOf(h12));
 
                     }
-                    if (h==0){
-                    if (m>20&&m<30){
-                        Minute=m-20;
-                        mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                            @Override
-                            public void onCompletion(MediaPlayer mp) {
-                                mp20.start();
-                                mp20.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                    @Override
-                                    public void onCompletion(MediaPlayer mp) {
-                                        mc24.start();
-                                    }
-                                });
-                            }
-                        });
-                    }
-                        if (m>30&&m<40){
-                            Minute=m-30;
-                            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                @Override
-                                public void onCompletion(MediaPlayer mp) {
-                                    mp30.start();
-                                    mp30.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                        @Override
-                                        public void onCompletion(MediaPlayer mp) {
-                                            mc24.start();
-                                        }
-                                    });
-                                }
-                            });
-                        }
-                        if (m>40&&m<50){
-                            Minute=m-40;
-                            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                @Override
-                                public void onCompletion(MediaPlayer mp) {
-                                    mp40.start();
-                                    mp40.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                        @Override
-                                        public void onCompletion(MediaPlayer mp) {
-                                            mc24.start();
-                                        }
-                                    });
-                                }
-                            });
-                        }if (m>50&&m<=59){
-                            Minute=m-50;
-                            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                @Override
-                                public void onCompletion(MediaPlayer mp) {
-                                    mp50.start();
-                                    mp50.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                        @Override
-                                        public void onCompletion(MediaPlayer mp) {
-                                            mc24.start();
-                                        }
-                                    });
-                                }
-                            });
-                        }
+                    else if (selectp==R.id.hours24){
 
+                        hours.setText(hs);
                     }
 
-                    else if(h!=0){
-                        if (m>20&&m<30){
-                            Minute=m-20;
-                            mc24.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                @Override
-                                public void onCompletion(MediaPlayer mp) {
-                                    mp20.start();
-                                    mp20.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                        @Override
-                                        public void onCompletion(MediaPlayer mp) {
-                                            mc26.start();
-                                        }
-                                    });
-                                }
-                            });
-                        }
-                        else if (m>30&&m<40){
-                                Minute=m-30;
-                            mc24.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                @Override
-                                public void onCompletion(MediaPlayer mp) {
+                    /*
+                    rg = (RadioGroup)rootView.findViewById(R.id.select);
+                rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
 
-                                    mp30.start();
-                                    mp30.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                        @Override
-                                        public void onCompletion(MediaPlayer mp) {
-                                            mc26.start();
-
-                                        }
-                                    });
-
-                                }
-                            });
-
-                        }
-                        else if (m>40&&m<50){
-                            Minute=m-40;
-                            mc24.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                @Override
-                                public void onCompletion(MediaPlayer mp) {
-                                    mp40.start();
-                                    mp40.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                        @Override
-                                        public void onCompletion(MediaPlayer mp) {
-                                            mc26.start();
-                                        }
-                                    });
-                                }
-                            });
-                        }
-                        else  if (m>50&&m<=59){
-                            Minute=m-50;
-                            mc24.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                @Override
-                                public void onCompletion(MediaPlayer mp) {
-                                    mp50.start();
-                                    mp50.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                        @Override
-                                        public void onCompletion(MediaPlayer mp) {
-                                            mc26.start();
-                                        }
-                                    });
-                                }
-                            });
+                    @Override
+                    public void onCheckedChanged(RadioGroup group, int checkedId) {
+                        // find which radio button is selected
+                        if(checkedId == R.id.hours12) {
+                            Toast.makeText(getActivity().getApplicationContext(), "choice: A",
+                                    Toast.LENGTH_SHORT).show();
+                        } else if(checkedId == R.id.hours24) {
+                            Toast.makeText(MainActivity,getApplicationContext(), "choice: B",
+                                    Toast.LENGTH_SHORT).show();
                         }
                     }
-                    if (Minute!=0){
-                        switch (Minute){
-                            case 1:
-                                mc26.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                    @Override
-                                    public void onCompletion(MediaPlayer mp) {
-                                        mp1.start();
-                                        mp1.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                            @Override
-                                            public void onCompletion(MediaPlayer mp) {
-                                                mc25.start();
-                                            }
-                                        });
-                                    }
-                                });break;
-                            case 2:
-                                mc26.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                    @Override
-                                    public void onCompletion(MediaPlayer mp) {
-                                        mp2.start();
-                                        mp2.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                            @Override
-                                            public void onCompletion(MediaPlayer mp) {
-                                                mc25.start();
-                                            }
-                                        });
-                                    }
-                                });break;
-                             case 3:
-                                mc26.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                    @Override
-                                    public void onCompletion(MediaPlayer mp) {
-                                        mp3.start();
-                                        mp3.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                            @Override
-                                            public void onCompletion(MediaPlayer mp) {
-                                                mc25.start();
-                                            }
-                                        });
-                                    }
-                                });break;
-                             case 4:
-                                mc26.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                    @Override
-                                    public void onCompletion(MediaPlayer mp) {
-                                        mp4.start();
-                                        mp4.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                            @Override
-                                            public void onCompletion(MediaPlayer mp) {
-                                                mc25.start();
-                                            }
-                                        });
-                                    }
-                                });break;
-                              case 5:
-                                mc26.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                    @Override
-                                    public void onCompletion(MediaPlayer mp) {
-                                        mp5.start();
-                                        mp5.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                            @Override
-                                            public void onCompletion(MediaPlayer mp) {
-                                                mc25.start();
-                                            }
-                                        });
-                                    }
-                                });break;
-                               case 6:
-                                mc26.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                    @Override
-                                    public void onCompletion(MediaPlayer mp) {
-                                        mp6.start();
-                                        mp6.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                            @Override
-                                            public void onCompletion(MediaPlayer mp) {
-                                                mc25.start();
-                                            }
-                                        });
-                                    }
-                                });break;
-                               case 7:
-                                mc26.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                    @Override
-                                    public void onCompletion(MediaPlayer mp) {
-                                        mp7.start();
-                                        mp7.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                            @Override
-                                            public void onCompletion(MediaPlayer mp) {
-                                                mc25.start();
-                                            }
-                                        });
-                                    }
-                                });break;
-                               case 8:
-                                mc26.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                    @Override
-                                    public void onCompletion(MediaPlayer mp) {
-                                        mp8.start();
-                                        mp8.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                            @Override
-                                            public void onCompletion(MediaPlayer mp) {
-                                                mc25.start();
-                                            }
-                                        });
-                                    }
-                                });break;
-                                case 9:
-                                mc26.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                    @Override
-                                    public void onCompletion(MediaPlayer mp) {
-                                        mp9.start();
-                                        mp9.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                                            @Override
-                                            public void onCompletion(MediaPlayer mp) {
-                                                mc25.start();
-                                            }
-                                        });
-                                    }
-                                });break;
-                        }
 
-                    }
-                    }
+                });*/
 
+        int i=0;
+        sounds[i++] = m==0 ?sounds1[h]:sounds1o[h];
 
-            }
-        });}
+        if (m<20)
+            sounds[i++]=sounds1[m];
+        else {
+
+            int m10 = m/10;
+            int m1 =m%10;
+            sounds[i++]= m1==0 ? sounds10[m10] : sounds10o[m10];
+            if (m1 != 0)
+                sounds[i++]=sounds1[m1];
+
+        }
+
+        if (m!=0)
+
+            sounds[i++]=R.raw.daghi;
+
+        sounds[i++]=0;
+
+        MediaPlayer mp =MediaPlayer.create(MainActivity .this,R.raw.saat1 );
+        mp.setOnCompletionListener(MainActivity.this);
+        mp.start();
+    }
+
+    });}
+
+        @Override
+        public void onCompletion(MediaPlayer mp) {
+                if (sounds[loc] != 0) {
+        MediaPlayer m = MediaPlayer.create(this, sounds[loc]);
+        loc++;
+        m.setOnCompletionListener(this);
+        m.start();
+        }
+        }
 }
 
 
